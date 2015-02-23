@@ -80,13 +80,8 @@ class TestSomaMaxima(TestCase):
         self.assertEqual((0,2), seq())
 
 
-unittest.main()
+    def test_com_sequencia_proposta(self):
+        seq = SomaMaxima([2, -4, 6, 8, -10, 100, -6, 5])
+        self.assertEqual((2, 5), seq())
 
-    # def test_positivo_grande_inclui_sequencia(self):
-    #     """
-    #     verifica se um numero positivo maior que a soma de sequencia de
-    #     negativos matém toda a sequencia na lista
-    #     ex: [5, -1, -1, -1, -1, 100] retorna a lista inteira
-    #     """
-    #     seq = []
-    #     self.assertEqual((3, 6), SomaMaxima(seq))
+unittest.main()
