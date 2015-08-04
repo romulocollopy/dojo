@@ -1,11 +1,12 @@
 import unittest
 import time
 from datetime import datetime
+from pathlib import Path
 
 
 class Logger:
 
-    path = "/home/romulocollopy/dev/projects/coding-dojo/logger/log.tmp"
+    path = Path('log.tmp')
 
     def __call__(self, _func):
 
@@ -24,14 +25,16 @@ class Logger:
 
     def log(self, message, now=None):
         now = now or datetime.now()
-        with open(self.path, 'a') as fd:
+        path = self.path.absolute().__str__()
+        with open(path, 'a') as fd:
             fd.write('{} - {}\n'.format(now, message))
 
 
 class LoggerTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.logfile = "/home/romulocollopy/dev/projects/coding-dojo/logger/log.tmp"
+        self.logfile = Path('log.tmp')
+        self.path = self.logfile.absolute().__str__()
         self.now = datetime.now()
 
     def test_is_singelton(self):
@@ -43,7 +46,7 @@ class LoggerTestCase(unittest.TestCase):
     def test_write_message(self):
         logger = Logger()
         logger.log('primeiro_log', self.now)
-        with open(self.logfile, 'r') as lf:
+        with open(self.path, 'r') as lf:
             message = lf.readlines()[-1]
         exp_message = '{} - {}\n'.format(self.now, 'primeiro_log')
         self.assertEqual(exp_message, message)
@@ -64,7 +67,7 @@ class LoggerTestCase(unittest.TestCase):
 
         my_func()
 
-        with open(self.logfile, 'r') as lf:
+        with open(self.path, 'r') as lf:
             message = lf.readlines()[-1]
 
         self.assertIn('my_func demorou 0:00:05', message)
