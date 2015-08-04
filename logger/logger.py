@@ -1,4 +1,5 @@
 import unittest
+import time
 from datetime import datetime
 
 
@@ -57,12 +58,19 @@ class LoggerTestCase(unittest.TestCase):
         logger = Logger()
 
         @logger
-        def func(x):
-            for i in range(999999):
-                i**20
-            return x
+        def my_func():
+            time.sleep(5)
+            return
 
-        func(100)
+        my_func()
+
+        with open(self.logfile, 'r') as lf:
+            message = lf.readlines()[-1]
+
+        self.assertIn('my_func demorou 0:00:05', message)
+        seconds = message.split(':')[-1]
+        sec, mil = seconds.split('.')
+        self.assertEqual(sec, '05')
 
 if __name__ == '__main__':
     unittest.main()
